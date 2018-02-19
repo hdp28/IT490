@@ -29,6 +29,23 @@ function auth($u, $v) {
     }
 }
 
+function register($e,$u,$v) {
+    ( $db = mysqli_connect ( 'localhost', 'testhost', 'password', 'userLogin' ) );
+    if (mysqli_connect_errno())
+    {
+      echo"Failed to connect to MYSQL<br><br> ". mysqli_connect_error();
+      exit();
+    }
+    echo "Successfully connected to MySQL<br><br>";
+    mysqli_select_db($db, 'userLogin' );
+
+    $s = "insert into users(email,username,password) values('$e','$u','$v')";
+    //echo "The SQL statement is $s";
+    ($t = mysqli_query ($db,$s)) or die(mysqli_error());
+    print "Registered";
+    return true;
+}
+
 function requestProcessor($request)
   {
       echo "received request".PHP_EOL;
@@ -43,6 +60,8 @@ function requestProcessor($request)
           return auth($request['username'],$request['password']);
         case "validate_session":
           return doValidate($request['sessionId']);
+        case "register":
+          return register($request['email'],$request['username'],$request['password']);
       }
       return array("returnCode" => '0', 'message'=>"Server received request and processed");
     }

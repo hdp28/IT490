@@ -1,19 +1,19 @@
-
 <?php
 error_reporting(-1);
 ini_set('display_errors', true);
 
 include ('client.php');
+$email = $_POST['email'];
 $user = $_POST['user'];
 $pass = $_POST['password'];
 
-$response = login($user,$pass);
-if($response == false)
+$response = register($email,$user,$pass);
+if($response == true)
   {
-    echo "Unthorized";
+    echo "Registered";
   }
   else
   {
-  echo "Authorized";
+  echo "Was not able to register";
   }
 ?>
